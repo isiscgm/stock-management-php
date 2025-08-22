@@ -1,5 +1,4 @@
 <?php
-// Mostrar mensagem de sucesso se a query string estiver presente
 if (isset($_GET['success'])) {
     if ($_GET['success'] == 1) {
         echo "<script>alert('Produto adicionado com sucesso!');</script>";
@@ -8,7 +7,6 @@ if (isset($_GET['success'])) {
     }
 }
 
-// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -23,10 +21,8 @@ if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Obter o termo de pesquisa
 $search_term = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Adicionar filtro de pesquisa à consulta SQL
 $search_query = "";
 if ($search_term) {
     $search_term = $conn->real_escape_string($search_term);
@@ -61,12 +57,9 @@ $result = $conn->query($sql);
     </style>
 </head>
 <body>
-    <!-- Botão de menu sanduíche (hambúrguer) -->
     <span class="hamburger" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </span>
-
-    <!-- navbar-menu -->
     <nav class="w3-sidebar w3-collapse w3-top w3-large" style="z-index:3;width:300px;font-weight:bold;background-color:#eeeeee;color:#fff;" id="mySidebar">
         <br>
         <div class="w3-container">
@@ -88,10 +81,8 @@ $result = $conn->query($sql);
 
 
     </nav>
-    <!-- Overlay effect when opening sidebar on small screens -->
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:340px;margin-right:40px;">
         <!-- Header -->
         <div class="w3-container" style="margin-top:80px" id="showcase">
@@ -99,7 +90,6 @@ $result = $conn->query($sql);
             <hr style="width:50px;border:5px solid black" class="w3-round">
         </div>
 
-        <!-- Caixa de Pesquisa -->
         <div class="container mt-4">
             <form method="GET" action="">
                 <div class="search-container mb-3">
@@ -111,7 +101,6 @@ $result = $conn->query($sql);
             </form>
         </div>
 
-        <!-- Tabela de Produtos -->
         <div class="container mt-4">
             <table class="table table-bordered mt-3">
                 <thead>
@@ -126,7 +115,6 @@ $result = $conn->query($sql);
                     <?php
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                            // Define a classe da bolinha de status
                             $statusClass = '';
                             $statusText = '';
                             switch ($row['status']) {

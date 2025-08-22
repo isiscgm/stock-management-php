@@ -1,19 +1,15 @@
 <?php
-session_start(); // Inicia a sessão
+session_start();
 
-// Inicializa as mensagens de erro
 $mensagem_rm = "";
 $mensagem_senha = "";
 
-// Verifica se o botão de envio do formulário foi clicado
 if (isset($_POST['submit'])) {
-    include_once('config.php'); // Inclui a configuração para conectar ao banco
+    include_once('config.php');
 
-    // Captura as entradas do formulário
-    $rm = trim($_POST['RM']);   // Obtém o RM digitado
-    $senha = trim($_POST['senha']); // Obtém a senha digitada
+    $rm = trim($_POST['RM']);
+    $senha = trim($_POST['senha']);
 
-    // Verifica se algum campo está vazio
     if (empty($rm)) {
         $mensagem_rm = "Preencha o RM.";
     }
@@ -21,27 +17,21 @@ if (isset($_POST['submit'])) {
         $mensagem_senha = "Preencha a senha.";
     }
 
-    // Se todos os campos estiverem preenchidos, tenta fazer o login
     if (empty($mensagem_rm) && empty($mensagem_senha)) {
-        // Consulta ao banco de dados para verificar RM e senha
         $result = mysqli_query($conexao, "SELECT * FROM cadastro WHERE rm = '$rm' AND senha = '$senha'");
         
         if (mysqli_num_rows($result) === 0) {
-            $mensagem_rm = "RM ou senha incorretos."; // Mensagem de erro se não encontrar correspondência
+            $mensagem_rm = "RM ou senha incorretos.";
         } else {
-            // Login bem-sucedido, armazena o RM e o email na sessão
             $usuario = mysqli_fetch_assoc($result);
-            $_SESSION['rm'] = $usuario['RM']; // Armazena o RM na sessão
-            $_SESSION['email'] = $usuario['email']; // Armazena o email na sessão, se necessário
-
-            // Redireciona para a página inicial (estoque.php ou home.php)
-            header("Location: home.php"); // Altere para a página desejada
-            exit; // Certifique-se de que o script pare após o redirecionamento
+            $_SESSION['rm'] = $usuario['RM'];
+            $_SESSION['email'] = $usuario['email'];
+            header("Location: home.php");
+            exit;
         }
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -67,7 +57,6 @@ if (isset($_POST['submit'])) {
                                 <div class="input-group-text"><i class="fa-solid fa-circle-user"></i></div>
                                 <input type="text" class="form-control" id="RM" name="RM" placeholder="RM" style="font-size: 20px;">
                             </div>
-                            <!-- Exibição de Mensagem de Erro para RM -->
                             <?php if (!empty($mensagem_rm)): ?>
                                 <div class="text-danger"><?php echo $mensagem_rm; ?></div>
                             <?php endif; ?>
@@ -84,7 +73,6 @@ if (isset($_POST['submit'])) {
                                     </button>
                                 </div>
                             </div>
-                            <!-- Exibição de Mensagem de Erro para Senha -->
                             <?php if (!empty($mensagem_senha)): ?>
                                 <div class="text-danger"><?php echo $mensagem_senha; ?></div>
                             <?php endif; ?>

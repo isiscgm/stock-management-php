@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Verifique se o código foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $codigo_inserido = $_POST['codigo'] ?? '';
-    $codigo_correto = $_SESSION['codigo_correto'] ?? ''; // Armazene o código na sessão
+    $codigo_correto = $_SESSION['codigo_correto'] ?? '';
 
     if ($codigo_inserido === $codigo_correto) {
-        // Se o código estiver correto, redireciona para redefinir a senha
         header('Location: redefinir_senha.php');
         exit;
     } else {
@@ -15,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Se o código não estiver definido, redirecionar para o formulário anterior
 if (!isset($_SESSION['codigo_correto'])) {
     header('Location: recuperar_senha.php');
     exit;

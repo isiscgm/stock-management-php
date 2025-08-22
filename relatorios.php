@@ -1,5 +1,4 @@
 <?php
-// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,12 +8,10 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 session_start();
 
-// Verificar conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Buscar contagem de status
 $sql = "SELECT status, COUNT(*) as count FROM produtos GROUP BY status";
 $result = $conn->query($sql);
 
@@ -25,7 +22,6 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-// Converter dados para JSON
 $dataJson = json_encode($data);
 ?>
 
@@ -58,12 +54,9 @@ $dataJson = json_encode($data);
         });
 
         var options = {
-            colors: ['#9B2128', '#1D772B', '#F8C513'], // Em falta, OK, Pendente
-            pieSliceText: 'label', // Exibe o rótulo das fatias
-            pieSliceTextStyle: {
-                color: 'black' // Cor do texto das fatias
-            },
-            pieSliceText: 'value' // Exibe o valor das fatias
+            colors: ['#9B2128', '#1D772B', '#F8C513'],
+            pieSliceTextStyle: { color: 'black' },
+            pieSliceText: 'value'
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -81,24 +74,20 @@ $dataJson = json_encode($data);
             .catch(error => console.error('Erro ao buscar produtos:', error));
     }
 
-    // Inicializa a lista de produtos ao carregar a página
     window.onload = updateProductList;
     </script>
     <style>
-    /* CSS para ajustar a largura e o tamanho do combobox */
     #statusFilter {
-        width: 150px; /* Ajuste a largura conforme necessário */
-        font-size: 14px; /* Ajuste o tamanho da fonte se necessário */
+        width: 150px;
+        font-size: 14px;
     }
     </style>
 </head>
 <body>
-    <!-- Botão de menu sanduíche (hambúrguer) -->
     <span class="hamburger" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </span>
 
-    <!-- navbar-menu -->
     <nav class="w3-sidebar w3-collapse w3-top w3-large" style="z-index:3;width:300px;font-weight:bold;background-color:#eeeeee;color:#fff;" id="mySidebar">
         <br>
         <div class="w3-container">
@@ -112,29 +101,23 @@ $dataJson = json_encode($data);
             <a href="servicos.php" onclick="w3_close()" class="w3-bar-item w3-dark-gray w3-button w3-hover-red">Serviços</a>
             <a href="baixa.php" class="w3-bar-item w3-gray w3-button w3-hover-red">Registro de Saída</a>
         </div>
-        <div class="w3-container" style="text-align: left; margin-top: 220px;">
-</div>
-<a href="logout.php" style="position: fixed; bottom: 20px; left: 20px; font-size: 18px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: black; padding: 10px 15px;">
-    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Sair
-</a>
+        <div class="w3-container" style="text-align: left; margin-top: 220px;"></div>
+        <a href="logout.php" style="position: fixed; bottom: 20px; left: 20px; font-size: 18px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: black; padding: 10px 15px;">
+            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Sair
+        </a>
     </nav>
 
-    <!-- Overlay effect when opening sidebar on small screens -->
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:340px;margin-right:40px;">
-        <!-- Header -->
         <div class="w3-container" style="margin-top:80px" id="showcase">
             <h1 class="w3-jumbo"><b>Relatórios</b></h1>
             <hr style="width:50px;border:5px solid black" class="w3-round">
         </div>
 
-        <!-- Gráfico de Pizza e Container para a lista de produtos -->
         <div style="display: flex; gap: 20px;">
             <div id="piechart" style="width: 600px; height: 500px;"></div>
 
-            <!-- Container para o combobox e a lista de produtos -->
             <div style="flex: 1;">
                 <label for="statusFilter">Filtrar por Status:</label>
                 <select id="statusFilter" class="form-select" onchange="updateProductList()">
@@ -143,9 +126,7 @@ $dataJson = json_encode($data);
                     <option value="Em falta">Em falta</option>
                 </select>
 
-                <div id="productList" style="margin-top: 20px;">
-                    <!-- A lista de produtos será inserida aqui -->
-                </div>
+                <div id="productList" style="margin-top: 20px;"></div>
             </div>
         </div>
     </div>

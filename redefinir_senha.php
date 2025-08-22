@@ -1,36 +1,23 @@
 <?php
-session_start(); // Inicia a sessão
+session_start();
 
 include_once('config.php');
 
-// if (isset($_SESSION['email'])) {
-//     echo "<div class='alert alert-success'>Email na sessão: " . $_SESSION['email'] . "</div>";
-// } else {
-//     echo "<div class='alert alert-danger'>Email não encontrado na sessão.</div>";
-// }
-
-// Verifica se o código foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nova_senha = $_POST['nova_senha'] ?? '';
     $confirmar_senha = $_POST['confirmar_senha'] ?? '';
-    $mensagem = ''; // Variável para armazenar mensagens de erro
-
-    // Verifica se as senhas são iguais
+    $mensagem = ''; 
+    
     if ($nova_senha === $confirmar_senha) {
-        // Recupera o email da sessão, se disponível
         $email = $_SESSION['email'] ?? '';
 
-        // Verifica se o email está definido na sessão
         if (!empty($email)) {
-            // Prepara a consulta SQL para atualizar a senha sem hash
             $sql = "UPDATE cadastro SET senha='$nova_senha' WHERE email='$email'";
 
             // Executa a consulta SQL
             if (mysqli_query($conexao, $sql)) {
                 echo "<div class='alert alert-success'>Senha atualizada com sucesso!</div>";
-                // Limpa apenas o código correto da sessão
                 unset($_SESSION['codigo_correto']);
-                // Redireciona para a página de login
                 header('Location: login.php');
                 exit;
             } else {

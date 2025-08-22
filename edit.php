@@ -1,7 +1,5 @@
 <?php
-// edit.php
 
-// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,7 +7,6 @@ $dbname = "pantry";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
@@ -17,7 +14,6 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $id = $_GET['id'];
     
-    // Buscar dados do produto
     $sql = "SELECT * FROM produtos WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
@@ -30,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         exit;
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Atualizar produto
     $id = $_POST['id'];
     $produto = $_POST['produto'];
     $quantidade = $_POST['quantidade'];
@@ -69,7 +64,6 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-mlO17D9ThRzHcE3zwBndzD1B5K8hxz8YUJQ3MyN52zsn8S7HQo7rdtrjlNfY4M7O" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Botão de menu sanduíche (hambúrguer) -->
     <span class="hamburger" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </span>
@@ -106,7 +100,6 @@ $conn->close();
     <label for="quantidade" class="form-label">Quantidade</label>
     <div class="input-group">
         <?php
-        // Separar a quantidade e a unidade, com verificação de segurança
         $quantidade_unidade = explode(' ', $product['quantidade']);
         $quantidade = isset($quantidade_unidade[0]) ? $quantidade_unidade[0] : '';
         $unidade = isset($quantidade_unidade[1]) ? $quantidade_unidade[1] : '';

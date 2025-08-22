@@ -1,5 +1,4 @@
 <?php
-// Mostrar mensagem de sucesso se a query string estiver presente
 if (isset($_GET['success'])) {
     if ($_GET['success'] == 1) {
         echo "<script>alert('Produto adicionado com sucesso!');</script>";
@@ -8,7 +7,6 @@ if (isset($_GET['success'])) {
     }
 }
 
-// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";

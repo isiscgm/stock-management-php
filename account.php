@@ -1,15 +1,14 @@
 <?php
-session_start(); // Certifique-se de que a sessão está iniciada
+session_start(); 
 
-// Inicializa as mensagens de erro
+
 $mensagem_rm = "";
 $mensagem_senha = "";
 $mensagem_email = "";
 $mensagem_email_existente = "";
-$mensagem_rm_existente = ""; // Mensagem para RM existente
+$mensagem_rm_existente = "";
 $chave = substr(uniqid(rand()), 0, 5);
 
-// Verifica se o botão de envio do formulário foi clicado
 if (isset($_POST['submit'])) {
     include_once('config.php');
 
@@ -17,7 +16,7 @@ if (isset($_POST['submit'])) {
     $senha = trim($_POST['senha']);
     $email = trim($_POST['email']);
 
-    // Verifica se algum campo está vazio
+
     if (empty($rm)) {
         $mensagem_rm = "Preencha o RM.";
     }
@@ -28,9 +27,7 @@ if (isset($_POST['submit'])) {
         $mensagem_email = "Preencha o e-mail.";
     }
 
-    // Se todos os campos estiverem preenchidos, verifica o email e o RM
     if (empty($mensagem_rm) && empty($mensagem_senha) && empty($mensagem_email)) {
-        // Verifica se o email já está cadastrado
         $stmt = $conexao->prepare("SELECT * FROM cadastro WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -40,7 +37,6 @@ if (isset($_POST['submit'])) {
             $mensagem_email_existente = "Esse email já está cadastrado.";
         }
 
-        // Verifica se o RM já está cadastrado
         $stmt = $conexao->prepare("SELECT * FROM cadastro WHERE rm = ?");
         $stmt->bind_param("s", $rm);
         $stmt->execute();
@@ -50,13 +46,12 @@ if (isset($_POST['submit'])) {
             $mensagem_rm_existente = "Esse RM já está cadastrado.";
         }
 
-        // Se o email e o RM não existirem, insere os dados no banco de dados
+
         if (empty($mensagem_email_existente) && empty($mensagem_rm_existente)) {
-            // Tenta inserir os dados no banco de dados
             $stmt = $conexao->prepare("INSERT INTO cadastro (rm, senha, email, codigoacessoconta) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $rm, $senha, $email, $chave);
             if ($stmt->execute()) {
-                $_SESSION['email'] = $email; // Armazena o email na sessão
+                $_SESSION['email'] = $email;
                 header("Location: login.php");
                 exit; 
             } else {
@@ -91,12 +86,10 @@ if (isset($_POST['submit'])) {
             <form name="cadastroForm" action="" method="POST" style="background-color: #ffffff; padding: 40px; border-radius: 9px;">
                 <img src="img/new.png" class="img">
                 
-                <!-- Exibição de Mensagem de Erro para Email Existente -->
                 <?php if (!empty($mensagem_email_existente)): ?>
                     <div class="alert alert-danger" role="alert"><?php echo $mensagem_email_existente; ?></div>
                 <?php endif; ?>
 
-                <!-- Exibição de Mensagem de Erro para RM Existente -->
                 <?php if (!empty($mensagem_rm_existente)): ?>
                     <div class="alert alert-danger" role="alert"><?php echo $mensagem_rm_existente; ?></div>
                 <?php endif; ?>
@@ -108,7 +101,6 @@ if (isset($_POST['submit'])) {
                             <div class="input-group-text"><i class="fa-solid fa-at"></i></div>
                             <input type="text" class="form-control" name="email" id="email" placeholder="Email" style="font-size: 20px;" onfocus="clearError('email')">
                         </div>
-                        <!-- Exibição de Mensagem de Erro para Email -->
                         <?php if (!empty($mensagem_email)): ?>
                             <div class="text-danger"><?php echo $mensagem_email; ?></div>
                         <?php endif; ?>
@@ -134,7 +126,6 @@ if (isset($_POST['submit'])) {
                             <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                             <input type="text" class="form-control" name="RM" id="RM" placeholder="RM" style="font-size: 20px;" onfocus="clearError('RM')">
                         </div>
-                        <!-- Exibição de Mensagem de Erro para RM -->
                         <?php if (!empty($mensagem_rm)): ?>
                             <div class="text-danger"><?php echo $mensagem_rm; ?></div>
                         <?php endif; ?>

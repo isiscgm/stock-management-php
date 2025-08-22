@@ -1,5 +1,5 @@
 <?php
-// Conectar ao banco de dados
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -7,7 +7,6 @@ $dbname = "pantry";
 
 session_start(); 
 
-// Verificar se o usuário está logado (se a sessão estiver ativa)
 if (!isset($_SESSION['rm']) || !isset($_SESSION['email'])) {
     die("Acesso negado. Você precisa estar logado.");
 }
@@ -15,25 +14,20 @@ if (!isset($_SESSION['rm']) || !isset($_SESSION['email'])) {
 $rm_responsavel = $_SESSION['rm'];
 $email_responsavel = $_SESSION['email'];
 
-// Conectar ao banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Obter lista de produtos
-$sql = "SELECT id, produto, quantidade FROM produtos WHERE quantidade > 0"; // Apenas produtos com quantidade disponível
+$sql = "SELECT id, produto, quantidade FROM produtos WHERE quantidade > 0"; 
 $result = $conn->query($sql);
 
-// Processar o formulário de baixa
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $produto_id = $_POST['produto_id'];
     $quantidade = $_POST['quantidade'];
     $motivo = $_POST['motivo'];
 
-    // Obter a quantidade atual do produto
     $sql_check = "SELECT quantidade FROM produtos WHERE id = $produto_id";
     $result_check = $conn->query($sql_check);
 
@@ -41,21 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $row = $result_check->fetch_assoc();
         $quantidade_disponivel = $row['quantidade'];
 
-        // Verificar se a quantidade solicitada não é maior que a disponível
         if ($quantidade <= $quantidade_disponivel) {
-            // Registrar a baixa no banco de dados
             $sql_insert = "INSERT INTO historico_baixas (produto_id, quantidade, motivo, rm_responsavel, email_responsavel, data_baixa)
                            VALUES ($produto_id, $quantidade, '$motivo', '$rm_responsavel', '$email_responsavel', NOW())";
             if ($conn->query($sql_insert) === TRUE) {
-// Atualizar a quantidade do produto
+
 $sql_update = "UPDATE produtos SET quantidade = quantidade - $quantidade WHERE id = $produto_id";
 if ($conn->query($sql_update) === TRUE) {
-    // Verificar se a quantidade do produto ficou 0
+
     $sql_check_quantity = "SELECT quantidade FROM produtos WHERE id = $produto_id";
     $result_check = $conn->query($sql_check_quantity);
     $row_check = $result_check->fetch_assoc();
 
-    // Se a quantidade for 0, excluir o produto
     if ($row_check['quantidade'] == 0) {
         $sql_delete = "DELETE FROM produtos WHERE id = $produto_id";
         if ($conn->query($sql_delete) === TRUE) {
@@ -65,10 +56,9 @@ if ($conn->query($sql_update) === TRUE) {
         }
     }
 
-    // Exibir alerta de sucesso
     echo "<script>alert('Baixa registrada com sucesso!');</script>";
-    echo "<script>window.location.href = 'baixa.php';</script>"; // Redirecionar depois do alerta
-    exit(); // Termina a execução do script
+    echo "<script>window.location.href = 'baixa.php';</script>"; 
+    exit(); 
 } else {
     echo "<script>alert('Erro ao atualizar a quantidade do produto.');</script>";
 }
@@ -77,7 +67,6 @@ if ($conn->query($sql_update) === TRUE) {
                 echo "<script>alert('Erro ao registrar a baixa.');</script>";
             }
         } else {
-            // Se a quantidade for maior do que a disponível
             echo "<script>alert('Quantidade solicitada é maior do que a disponível em estoque!');</script>";
         }
     } else {
@@ -182,8 +171,6 @@ if ($conn->query($sql_update) === TRUE) {
                 <button type="submit" class="btn btn-primary">Registrar Baixa</button>
             </form>
         </div>
-
-        <!-- Tabela de Histórico de Baixas -->
         <div class="container mt-5">
             <h2>Histórico de Baixas</h2>
             <table class="table table-bordered">
@@ -199,7 +186,6 @@ if ($conn->query($sql_update) === TRUE) {
                 </thead>
                 <tbody>
                     <?php
-                    // Obter histórico de baixas
                     $sql_histórico = "SELECT h.rm_responsavel, h.email_responsavel, h.data_baixa, p.produto, h.quantidade, h.motivo
                                       FROM historico_baixas h
                                       JOIN produtos p ON h.produto_id = p.id
@@ -236,7 +222,6 @@ if ($conn->query($sql_update) === TRUE) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="motivoModalBody">
-                    <!-- O motivo será carregado aqui via JS -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

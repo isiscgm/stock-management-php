@@ -1,5 +1,4 @@
 <?php
-// Conectar ao banco de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -7,15 +6,12 @@ $dbname = "pantry";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Obter o status da URL
 $status = isset($_GET['status']) ? $_GET['status'] : '';
 
-// Construir a consulta SQL
 $sql = "SELECT produto, quantidade, unidade FROM produtos";
 if ($status !== '') {
     $sql .= " WHERE status = '" . $conn->real_escape_string($status) . "'";

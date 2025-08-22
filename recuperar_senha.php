@@ -7,48 +7,43 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-session_start(); // Inicia a sessão
+session_start();
 
-$email = $_POST['email'] ?? ''; // Para evitar "undefined index"
-$mensagem_email = ''; // Inicializa a variável de mensagem
+$email = $_POST['email'] ?? ''; 
+$mensagem_email = ''; 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
     $sql = "SELECT email, codigoacessoconta FROM cadastro WHERE email='$email'";
     $query = mysqli_query($conexao, $sql) or die($conexao->error);
     $reg = $query->fetch_object();
 
     if (!$reg) {
-        $mensagem_email = "Email não encontrado."; // Mensagem de erro se o email não existir
+        $mensagem_email = "Email não encontrado."; 
     } else {
         $email = $reg->email;
         $codigo = $reg->codigoacessoconta;
         
-        // Armazena o código na sessão
         $_SESSION['codigo_correto'] = $codigo; 
 
         $mail = new PHPMailer(true);
         try {
-            // Configurações do servidor
-            $mail->isSMTP(); // Define o uso de SMTP no envio
-            $mail->SMTPAuth = true; // Habilita a autenticação SMTP
+            $mail->isSMTP();
+            $mail->SMTPAuth = true; 
             $mail->Username = 'pantryescolar@gmail.com';
-            $mail->Password = 'pmqo pjni cneu zjjs'; // Use senhas de aplicativo se a autenticação de dois fatores estiver ativada
-            $mail->SMTPSecure = 'tls'; // Criptografia do envio
+            $mail->Password = 'pmqo pjni cneu zjjs';
+            $mail->SMTPSecure = 'tls'; 
             $mail->Host = 'smtp.gmail.com';
             $mail->Port = 587;
 
-            // Define o remetente
+
             $mail->setFrom('pantryescolar@gmail.com', 'Pantry');
-            // Define o destinatário
             $mail->addAddress($email);
-            // Conteúdo
             $mail->Subject = 'Redefinir sua senha Pantry';
             $mail->Body = 'Seu código de acesso é: ' . $codigo . '. Por favor, use este código para redefinir sua senha.';
             
-            // Enviar
             $mail->send();
-            header('Location: validar_codigo.php'); // Redireciona para a página de validação de código
-            exit; // Certifique-se de encerrar a execução após redirecionar
+            header('Location: validar_codigo.php');
+            exit; 
         } catch (Exception $e) {
             echo "A mensagem não pôde ser enviada. Erro: {$mail->ErrorInfo}";
         }

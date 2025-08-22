@@ -1,21 +1,17 @@
 <?php
-// Conexão com o banco de dados
 $servername = "Localhost";
 $username = "root";
 $password = "";
 $dbname = "pantry";
 
-// Criar conexão
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 session_start();
 
-// Verificar conexão
 if ($conn->connect_error) {
     die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Consulta SQL
 $sql = "SELECT RM, email FROM cadastro";
 $result = $conn->query($sql);
 ?>
@@ -35,13 +31,10 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-mlO17D9ThRzHcE3zwBndzD1B5K8hxz8YUJQ3MyN52zsn8S7HQo7rdtrjlNfY4M7O" crossorigin="anonymous"></script>
 </head>
 <body>
-
-     <!-- Botão de menu sanduíche (hambúrguer) -->
      <span class="hamburger" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </span>
 
-    <!-- navbar-menu -->
     <nav class="w3-sidebar w3-collapse w3-top w3-large" style="z-index:3;width:300px;font-weight:bold;background-color:#eeeeee;color:#fff;" id="mySidebar">
         <br>
         <div class="w3-container">
@@ -63,10 +56,7 @@ $result = $conn->query($sql);
 
 
     </nav>
-    <!-- Overlay effect when opening sidebar on small screens -->
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-    <!-- !PAGE CONTENT! -->
     <div class="w3-main" style="margin-left:340px;margin-right:40px;">
         <!-- Header -->
         <div class="w3-container" style="margin-top:80px" id="showcase">
