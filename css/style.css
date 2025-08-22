@@ -1,0 +1,165 @@
+
+       
+       .w3-button.w3-hide-large {
+            display: block;
+        }
+        .hamburger {
+            display: none; /* Inicialmente escondido em telas grandes */
+            font-size: 30px;
+            cursor: pointer;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 4;
+        }
+
+        /* Mostrar o botão de hambúrguer em telas pequenas */
+        @media (max-width: 992px) {
+            .hamburger {
+                display: block;
+            }
+        }
+/* Estilo do container do formulário */
+.form-container {
+    max-width: 500px; /* Largura máxima do formulário */
+    margin: 20px auto; /* Centraliza o formulário */
+    padding: 20px; /* Espaçamento interno */
+    border: 1px solid #ddd; /* Borda do container */
+    border-radius: 8px; /* Bordas arredondadas */
+    background-color: #f9f9f9; /* Cor de fundo do container */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra leve */
+}
+
+
+/* Ajuste do botão de adicionar produto */
+.add-product-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #222222;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-product-btn:hover {
+    background-color: #222222;
+}
+
+
+/* Estilo dos ícones de ação na tabela */
+.action-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icons a {
+    color: #000;
+    font-size: 18px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.action-icons a:hover {
+    color: #ff0000;
+}
+
+/* Estilo das bolinhas de status */
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+/* Cores dos status */
+.status-ok {
+    background-color: green;
+}
+
+.status-pendente {
+    background-color: #FFC107; /* Amarelo meio laranja */
+}
+
+.status-em-falta {
+    background-color: red;
+}
+
+/* Ajustar a aparência do texto do status */
+.status-text {
+    text-transform: none; /* Remove o caps lock */
+    font-weight: normal;  /* Ajusta o peso da fonte, se necessário */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-top: 20px; /* Ajuste conforme necessário */
+}
+
+.user-info i {
+    margin-left: 10px; /* Espaço entre o nome e o ícone */
+    font-size: 24px; /* Ajuste o tamanho do ícone */
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input, select, textarea {
+    margin: 5px 0 15px;
+    padding: 8px;
+    width: 100%;
+    max-width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+

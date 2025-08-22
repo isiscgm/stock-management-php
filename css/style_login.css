@@ -1,0 +1,10 @@
+.img{
+    width: 200px;
+    margin-bottom: 30px;
+}
+
+body{
+    background-image: url('../img/estoque.png');
+    background-size: 330vh;
+    background-repeat: no-repeat;
+}
